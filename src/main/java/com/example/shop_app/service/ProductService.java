@@ -1,0 +1,43 @@
+package com.example.shop_app.service;
+
+import com.example.shop_app.domain.Member;
+import com.example.shop_app.domain.Product;
+import com.example.shop_app.repository.MemberRepository;
+import com.example.shop_app.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class ProductService {
+
+    private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(MemberRepository memberRepository, ProductRepository productRepository) {
+        this.memberRepository = memberRepository;
+        this.productRepository = productRepository;
+    }
+
+    public Product createProduct(Long memberId, String name, String description, int price) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        Product product = new Product(member, name, description, price);
+        return productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> getProducts() {
+        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Transactional(readOnly = true)
+    public Product getProduct(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+    }
+}
