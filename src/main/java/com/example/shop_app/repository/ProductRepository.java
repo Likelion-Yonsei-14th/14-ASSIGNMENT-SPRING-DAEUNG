@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findAllByName(String name);
+    List<Product> findAllByNameContaining(String keyword);
 }

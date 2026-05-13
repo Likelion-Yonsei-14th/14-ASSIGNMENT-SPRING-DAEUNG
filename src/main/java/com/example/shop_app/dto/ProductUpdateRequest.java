@@ -1,21 +1,12 @@
 package com.example.shop_app.dto;
 
-public class ProductCreateRequest {
+public class ProductUpdateRequest {
 
-    private Long sellerId;
     private String name;
     private String description;
     private int price;
 
-    public ProductCreateRequest() {
-    }
-
-    public Long getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
+    public ProductUpdateRequest() {
     }
 
     public String getName() {
