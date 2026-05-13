@@ -2,9 +2,12 @@ package com.example.shop_app.service;
 
 import com.example.shop_app.domain.Member;
 import com.example.shop_app.domain.Product;
+import com.example.shop_app.exception.CustomException;
+import com.example.shop_app.exception.ErrorCode;
+import com.example.shop_app.exception.MemberNotFoundException;
+import com.example.shop_app.exception.ProductNotFoundException;
 import com.example.shop_app.repository.MemberRepository;
 import com.example.shop_app.repository.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,8 +26,18 @@ public class ProductService {
     }
 
     public Product createProduct(Long memberId, String name, String description, int price) {
+        if (name == null || name.isBlank()) {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT_NAME);
+        }
+        if (description == null || description.isBlank()) {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT_DESCRIPTION);
+        }
+        if (price <= 0) {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT_PRICE);
+        }
+
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(MemberNotFoundException::new);
 
         Product product = new Product(member, name, description, price);
         return productRepository.save(product);
@@ -38,6 +51,6 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
     }
 }
