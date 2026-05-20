@@ -32,7 +32,6 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse createProduct(@RequestBody ProductCreateRequest request) {
         Product product = productService.createProduct(
-                request.getSellerId(),
                 request.getName(),
                 request.getDescription(),
                 request.getPrice()

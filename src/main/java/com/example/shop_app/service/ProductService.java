@@ -25,10 +25,11 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Long sellerId, String name, String description, int price) {
+    public Product createProduct(String name, String description, int price) {
         validateProductFields(name, description, price);
 
-        Member member = memberRepository.findById(sellerId)
+        Member member = memberRepository.findAll().stream()
+                .findFirst()
                 .orElseThrow(MemberNotFoundException::new);
 
         Product product = new Product(member, name, description, price);
