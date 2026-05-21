@@ -34,6 +34,13 @@ public class MemberService {
         return MemberResponse.from(member);
     }
 
+    @Transactional(readOnly = true)
+    public Member getLoginMember(HttpServletRequest request, String authorizationHeader) {
+        Long memberId = resolveMemberId(request, authorizationHeader);
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
     private Long resolveMemberId(HttpServletRequest request, String authorizationHeader) {
         Long memberId = getMemberIdFromSession(request);
         if (memberId == null) {

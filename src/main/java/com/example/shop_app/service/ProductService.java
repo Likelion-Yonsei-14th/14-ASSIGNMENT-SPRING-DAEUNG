@@ -25,12 +25,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(String name, String description, int price) {
+    public Product createProduct(Member member, String name, String description, int price) {
         validateProductFields(name, description, price);
-
-        Member member = memberRepository.findAll().stream()
-                .findFirst()
-                .orElseThrow(MemberNotFoundException::new);
 
         Product product = new Product(member, name, description, price);
         return productRepository.save(product);
@@ -47,19 +43,28 @@ public class ProductService {
                 .orElseThrow(ProductNotFoundException::new);
     }
 
-    public Product updateProduct(Long productId, String name, String description, int price) {
+    public Product updateProduct(Long memberId, Long productId, String name, String description, int price) {
         validateProductFields(name, description, price);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
 
+        if (!product.getMember().getId().equals(memberId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
         product.update(name, description, price);
         return product;
     }
 
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(Long memberId, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
+
+        if (!product.getMember().getId().equals(memberId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
         productRepository.delete(product);
     }
 
