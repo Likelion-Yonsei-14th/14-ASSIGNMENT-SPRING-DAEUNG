@@ -27,23 +27,24 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResponse getCurrentMember(HttpServletRequest request, String authorizationHeader) {
-        Long memberId = resolveMemberId(request, authorizationHeader);
+    public MemberResponse getCurrentMember(HttpServletRequest request) {
+        Long memberId = resolveMemberId(request);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
         return MemberResponse.from(member);
     }
 
     @Transactional(readOnly = true)
-    public Member getLoginMember(HttpServletRequest request, String authorizationHeader) {
-        Long memberId = resolveMemberId(request, authorizationHeader);
+    public Member getLoginMember(HttpServletRequest request) {
+        Long memberId = resolveMemberId(request);
         return memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    private Long resolveMemberId(HttpServletRequest request, String authorizationHeader) {
+    private Long resolveMemberId(HttpServletRequest request) {
         Long memberId = getMemberIdFromSession(request);
         if (memberId == null) {
+            String authorizationHeader = request.getHeader("Authorization");
             memberId = getMemberIdFromToken(authorizationHeader);
         }
         if (memberId == null) {

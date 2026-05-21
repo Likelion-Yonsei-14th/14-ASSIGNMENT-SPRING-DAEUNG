@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,10 +37,9 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse createProduct(
             HttpServletRequest httpServletRequest,
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @RequestBody ProductCreateRequest request) {
         
-        Member loginMember = memberService.getLoginMember(httpServletRequest, authorizationHeader);
+        Member loginMember = memberService.getLoginMember(httpServletRequest);
         Product product = productService.createProduct(
                 loginMember,
                 request.getName(),
@@ -68,11 +66,10 @@ public class ProductController {
     @PatchMapping("/{productId}")
     public ProductResponse updateProduct(
             HttpServletRequest httpServletRequest,
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Long productId,
             @RequestBody ProductUpdateRequest request) {
         
-        Member loginMember = memberService.getLoginMember(httpServletRequest, authorizationHeader);
+        Member loginMember = memberService.getLoginMember(httpServletRequest);
         Product product = productService.updateProduct(
                 loginMember.getId(),
                 productId,
@@ -87,10 +84,9 @@ public class ProductController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(
             HttpServletRequest httpServletRequest,
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Long productId) {
         
-        Member loginMember = memberService.getLoginMember(httpServletRequest, authorizationHeader);
+        Member loginMember = memberService.getLoginMember(httpServletRequest);
         productService.deleteProduct(loginMember.getId(), productId);
     }
 
