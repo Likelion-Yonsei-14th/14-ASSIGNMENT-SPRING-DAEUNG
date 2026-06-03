@@ -100,6 +100,23 @@ public class OrderService {
                 .toList();
     }
 
+        @Transactional
+        public OrderResponse cancelOrder(Member member, Long orderId) {
+                Order order = orderRepository.findById(orderId)
+                                .orElseThrow(OrderNotFoundException::new);
+                if (!order.getMember().getId().equals(member.getId())) {
+                        throw new CustomException(ErrorCode.FORBIDDEN);
+                }
+
+                List<OrderItem> items = orderItemRepository.findAllByOrderId(orderId);
+                for (OrderItem item : items) {
+                        item.getProduct().increaseStock(item.getQuantity());
+                }
+
+                order.cancel();
+                return toOrderResponse(order, items);
+        }
+
     private void validateQuantity(Integer quantity) {
         if (quantity == null || quantity <= 0) {
             throw new CustomException(ErrorCode.INVALID_ORDER_QUANTITY);

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,5 +48,12 @@ public class OrderController {
     public List<OrderResponse> getMyOrders(HttpServletRequest httpServletRequest) {
         Member loginMember = memberService.getLoginMember(httpServletRequest);
         return orderService.getMyOrders(loginMember);
+    }
+
+    @PatchMapping("/{orderId}/cancel")
+    public OrderResponse cancelOrder(HttpServletRequest httpServletRequest,
+                                     @PathVariable Long orderId) {
+        Member loginMember = memberService.getLoginMember(httpServletRequest);
+        return orderService.cancelOrder(loginMember, orderId);
     }
 }
