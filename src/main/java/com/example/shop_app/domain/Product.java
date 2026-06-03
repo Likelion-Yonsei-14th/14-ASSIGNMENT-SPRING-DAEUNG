@@ -31,14 +31,18 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private int price;
 
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
+
     protected Product() {
     }
 
-    public Product(Member member, String name, String description, int price) {
+    public Product(Member member, String name, String description, int price, Integer stockQuantity) {
         this.member = member;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.stockQuantity = stockQuantity;
     }
 
     public void update(String name, String description, int price) {
@@ -65,5 +69,9 @@ public class Product extends BaseEntity {
 
     public int getPrice() {
         return price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
     }
 }

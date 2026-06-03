@@ -37,6 +37,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Product> products = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Order> orders = new ArrayList<>();
+
     protected Member() {
     }
 
@@ -73,5 +76,9 @@ public class Member extends BaseEntity {
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 }

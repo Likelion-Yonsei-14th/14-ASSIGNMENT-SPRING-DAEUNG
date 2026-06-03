@@ -5,6 +5,7 @@ public class ProductCreateRequest {
     private String name;
     private String description;
     private int price;
+    private Integer stockQuantity;
 
     public ProductCreateRequest() {
     }
@@ -31,5 +32,13 @@ public class ProductCreateRequest {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

@@ -44,7 +44,8 @@ public class ProductController {
                 loginMember,
                 request.getName(),
                 request.getDescription(),
-                request.getPrice()
+            request.getPrice(),
+            request.getStockQuantity()
         );
 
         return ProductResponse.from(product);

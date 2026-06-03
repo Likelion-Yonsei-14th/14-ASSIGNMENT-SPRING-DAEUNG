@@ -25,10 +25,11 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Member member, String name, String description, int price) {
-        validateProductFields(name, description, price);
+    public Product createProduct(Member member, String name, String description, int price,
+                                 Integer stockQuantity) {
+        validateProductFields(name, description, price, stockQuantity);
 
-        Product product = new Product(member, name, description, price);
+        Product product = new Product(member, name, description, price, stockQuantity);
         return productRepository.save(product);
     }
 
@@ -44,7 +45,7 @@ public class ProductService {
     }
 
     public Product updateProduct(Long memberId, Long productId, String name, String description, int price) {
-        validateProductFields(name, description, price);
+        validateProductFields(name, description, price, 0);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
@@ -76,7 +77,8 @@ public class ProductService {
         return productRepository.findAllByNameContaining(keyword);
     }
 
-    private void validateProductFields(String name, String description, int price) {
+    private void validateProductFields(String name, String description, int price,
+                                       Integer stockQuantity) {
         if (name == null || name.isBlank()) {
             throw new CustomException(ErrorCode.INVALID_PRODUCT_NAME);
         }
@@ -85,6 +87,9 @@ public class ProductService {
         }
         if (price <= 0) {
             throw new CustomException(ErrorCode.INVALID_PRODUCT_PRICE);
+        }
+        if (stockQuantity == null || stockQuantity < 0) {
+            throw new CustomException(ErrorCode.INVALID_PRODUCT_STOCK);
         }
     }
 }
