@@ -51,6 +51,10 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
+    public void decreaseStock(int quantity) {
+        this.stockQuantity -= quantity;
+    }
+
     public Long getId() {
         return id;
     }
