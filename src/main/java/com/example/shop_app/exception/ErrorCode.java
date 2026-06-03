@@ -17,6 +17,7 @@ public enum ErrorCode {
     INVALID_PRODUCT_STOCK(HttpStatus.BAD_REQUEST, "INVALID_PRODUCT_STOCK", "상품 재고가 0 미만"),
     INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "INVALID_ORDER_QUANTITY", "주문 수량이 0 이하"),
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "OUT_OF_STOCK", "상품 재고가 부족함"),
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER_NOT_FOUND", "주문을 찾을 수 없음"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "서버 오류");
 
     private final HttpStatus status;
