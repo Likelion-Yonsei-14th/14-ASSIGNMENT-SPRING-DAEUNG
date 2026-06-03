@@ -107,6 +107,9 @@ public class OrderService {
                 if (!order.getMember().getId().equals(member.getId())) {
                         throw new CustomException(ErrorCode.FORBIDDEN);
                 }
+                if (order.getStatus() == Order.OrderStatus.CANCELED) {
+                        throw new CustomException(ErrorCode.ORDER_ALREADY_CANCELED);
+                }
 
                 List<OrderItem> items = orderItemRepository.findAllByOrderId(orderId);
                 for (OrderItem item : items) {
