@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-	List<Order> findAllByMemberIdOrderByIdDesc(Long memberId);
+	List<Order> findByMemberId(Long memberId);
 }

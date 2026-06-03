@@ -83,7 +83,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderResponse> getMyOrders(Member member) {
-        List<Order> orders = orderRepository.findAllByMemberIdOrderByIdDesc(member.getId());
+                List<Order> orders = orderRepository.findByMemberId(member.getId());
         if (orders.isEmpty()) {
             return Collections.emptyList();
         }
